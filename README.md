@@ -1,4 +1,4 @@
-# NileBank — SRS Security Project 🏦
+# NileBank - Web Pen Testing Project
 
 A realistic bank web application with **5 hidden security vulnerabilities** embedded in the code.
 The team's task is to find, understand, and fix each one.
