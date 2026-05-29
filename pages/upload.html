@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>NileBank — Upload Documents</title>
+  <link rel="stylesheet" href="../css/main.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+</head>
+<body class="page-inner">
+
+  <nav class="topnav">
+    <div class="nav-inner">
+      <div class="brand"><a href="../index.html" style="text-decoration:none;color:inherit"><span class="brand-n">N</span>ILE<span class="brand-b">BANK</span></a></div>
+      <div class="nav-links">
+        <a href="transfer.html">Transfer</a>
+        <a href="search.html">Search</a>
+        <a href="upload.html" class="active">Documents</a>
+        <a href="profile.html">Profile</a>
+      </div>
+      <div class="nav-user">👤 Ahmed Mohamed &nbsp;|&nbsp; <a href="../index.html">Logout</a></div>
+    </div>
+  </nav>
+
+  <div class="inner-layout">
+    <aside class="sidebar">
+      <div class="account-card">
+        <div class="acc-label">Current Balance</div>
+        <div class="acc-balance">EGP 24,850.00</div>
+        <div class="acc-num">NB-00001</div>
+      </div>
+      <nav class="side-nav">
+        <a href="transfer.html" class="side-link">💸 Transfer</a>
+        <a href="search.html"   class="side-link">🔍 Search Transactions</a>
+        <a href="upload.html"   class="side-link active">📎 Upload Documents</a>
+        <a href="profile.html"  class="side-link">👤 Profile</a>
+      </nav>
+    </aside>
+
+    <main class="inner-main">
+      <div class="page-header">
+        <h1>Document Center</h1>
+        <p>Upload identity documents, bank statements, or proof of address.</p>
+      </div>
+
+      <div class="form-card">
+        <h3 class="form-section-title">Upload New Document</h3>
+
+        <form onsubmit="handleUpload(event)">
+          <div class="field-group">
+            <label>Document Type</label>
+            <select class="inp" id="doc-type">
+              <option value="">Select document type</option>
+              <option value="national_id">National ID</option>
+              <option value="passport">Passport</option>
+              <option value="bank_statement">Bank Statement</option>
+              <option value="proof_address">Proof of Address</option>
+              <option value="tax">Tax Document</option>
+            </select>
+          </div>
+
+          <div class="field-group">
+            <label>Document Description</label>
+            <input type="text" class="inp" id="doc-desc" placeholder="e.g. National ID front side"/>
+          </div>
+
+          <div class="field-group">
+            <label>Select File</label>
+            <!--
+              BUG #4 [UNRESTRICTED FILE UPLOAD — HIDDEN]:
+              The accept attribute is missing entirely.
+              Server-side there is NO MIME type check, NO extension whitelist.
+              An attacker can upload shell.php, malware.exe, or any script.
+              The file is saved directly to /uploads/ inside the web root
+              and is immediately accessible via a URL — enabling RCE.
+            -->
+            <div class="upload-drop" onclick="document.getElementById('file-inp').click()"
+                 ondragover="event.preventDefault()" ondrop="handleDrop(event)">
+              <div class="drop-icon">📄</div>
+              <div class="drop-text">Click to browse or drag & drop</div>
+              <div class="drop-sub" id="drop-filename">Supported formats: PDF, JPG, PNG</div>
+              <input type="file" id="file-inp" style="display:none" onchange="fileSelected(this)"/>
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label>Expiry Date (if applicable)</label>
+            <input type="date" class="inp inp-short" id="doc-expiry"/>
+          </div>
+
+          <div class="form-actions">
+            <button type="button" class="btn-secondary" onclick="clearUpload()">Clear</button>
+            <button type="submit" class="btn-primary">Upload Document →</button>
+          </div>
+        </form>
+
+        <div id="upload-msg" class="form-msg"></div>
+      </div>
+
+      <div class="form-card">
+        <h3 class="form-section-title">Uploaded Documents</h3>
+        <table class="data-table">
+          <thead><tr><th>Document</th><th>Type</th><th>Uploaded</th><th>Status</th><th></th></tr></thead>
+          <tbody id="docs-list">
+            <tr><td>National_ID_front.jpg</td><td>National ID</td><td>2025-03-10</td><td><span class="status-ok">Verified</span></td><td><a href="#" class="tbl-link">View</a></td></tr>
+            <tr><td>BankStatement_Q1.pdf</td><td>Bank Statement</td><td>2025-04-01</td><td><span class="status-pending">Pending</span></td><td><a href="#" class="tbl-link">View</a></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+
+  <script src="../js/main.js"></script>
+  <script src="../js/upload.js"></script>
+</body>
+</html>

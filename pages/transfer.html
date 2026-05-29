@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>NileBank — Transfer Funds</title>
+  <link rel="stylesheet" href="../css/main.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+</head>
+<body class="page-inner">
+
+  <nav class="topnav">
+    <div class="nav-inner">
+      <div class="brand"><a href="../index.html" style="text-decoration:none;color:inherit"><span class="brand-n">N</span>ILE<span class="brand-b">BANK</span></a></div>
+      <div class="nav-links">
+        <a href="transfer.html" class="active">Transfer</a>
+        <a href="search.html">Search</a>
+        <a href="upload.html">Documents</a>
+        <a href="profile.html">Profile</a>
+      </div>
+      <div class="nav-user">👤 Ahmed Mohamed &nbsp;|&nbsp; <a href="../index.html">Logout</a></div>
+    </div>
+  </nav>
+
+  <div class="inner-layout">
+    <aside class="sidebar">
+      <div class="account-card">
+        <div class="acc-label">Current Balance</div>
+        <div class="acc-balance">EGP 24,850.00</div>
+        <div class="acc-num">NB-00001</div>
+      </div>
+      <nav class="side-nav">
+        <a href="transfer.html" class="side-link active">💸 Transfer</a>
+        <a href="search.html"   class="side-link">🔍 Search Transactions</a>
+        <a href="upload.html"   class="side-link">📎 Upload Documents</a>
+        <a href="profile.html"  class="side-link">👤 Profile</a>
+      </nav>
+    </aside>
+
+    <main class="inner-main">
+      <div class="page-header">
+        <h1>Fund Transfer</h1>
+        <p>Transfer money to any NileBank account instantly.</p>
+      </div>
+
+      <div class="form-card">
+        <h3 class="form-section-title">Transfer Details</h3>
+
+        <form onsubmit="handleTransfer(event)">
+          <div class="field-row">
+            <div class="field-group">
+              <label>Recipient Account Number</label>
+              <!--
+                BUG #2 [SQL INJECTION — HIDDEN]:
+                This value is passed directly to the backend query:
+                  SELECT * FROM accounts WHERE account_no = '$input'
+                Payload: NB-00002' OR '1'='1
+                No parameterization. No input sanitization.
+              -->
+              <input type="text" id="recipient" class="inp" placeholder="e.g. NB-00042"/>
+              <span class="field-hint">Enter the recipient's NileBank account number</span>
+            </div>
+            <div class="field-group">
+              <label>Recipient Name</label>
+              <input type="text" id="recip-name" class="inp" placeholder="Full name"/>
+            </div>
+          </div>
+
+          <div class="field-row">
+            <div class="field-group">
+              <label>Amount (EGP)</label>
+              <div class="input-prefix-wrap">
+                <span class="prefix">EGP</span>
+                <input type="number" id="amount" class="inp inp-prefix" placeholder="0.00" min="1"/>
+              </div>
+            </div>
+            <div class="field-group">
+              <label>Transfer Note</label>
+              <input type="text" id="note" class="inp" placeholder="Optional note"/>
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label>Transaction PIN</label>
+            <input type="password" id="pin" class="inp inp-short" placeholder="4-digit PIN" maxlength="4"/>
+          </div>
+
+          <div class="form-actions">
+            <button type="button" class="btn-secondary" onclick="history.back()">Cancel</button>
+            <button type="submit" class="btn-primary">Confirm Transfer →</button>
+          </div>
+        </form>
+
+        <div id="transfer-msg" class="form-msg"></div>
+      </div>
+
+      <div class="recent-box">
+        <h3>Recent Transfers</h3>
+        <table class="data-table">
+          <thead><tr><th>Date</th><th>Recipient</th><th>Amount</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td>2025-04-28</td><td>Sara Ali — NB-00002</td><td>EGP 500.00</td><td><span class="status-ok">Completed</span></td></tr>
+            <tr><td>2025-04-21</td><td>Omar Hassan — NB-00003</td><td>EGP 1,200.00</td><td><span class="status-ok">Completed</span></td></tr>
+            <tr><td>2025-04-15</td><td>Nour Ibrahim — NB-00004</td><td>EGP 300.00</td><td><span class="status-ok">Completed</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+
+  <script src="../js/main.js"></script>
+  <script src="../js/transfer.js"></script>
+</body>
+</html>

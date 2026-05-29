@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>NileBank — Secure Digital Banking</title>
+  <link rel="stylesheet" href="css/main.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+</head>
+<body class="page-login">
+
+  <nav class="topnav">
+    <div class="nav-inner">
+      <div class="brand">
+        <span class="brand-n">N</span>ILE<span class="brand-b">BANK</span>
+      </div>
+      <div class="nav-links">
+        <a href="pages/transfer.html">Transfer</a>
+        <a href="pages/search.html">Search</a>
+        <a href="pages/upload.html">Documents</a>
+        <a href="pages/profile.html">Profile</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="login-main">
+    <div class="login-left">
+      <div class="hero-text">
+        <p class="hero-eyebrow">Welcome back</p>
+        <h1 class="hero-heading">Your money.<br/>Always secure.</h1>
+        <p class="hero-sub">NileBank gives you full control of your finances with enterprise-grade protection.</p>
+      </div>
+      <div class="trust-badges">
+        <div class="badge">🔒 256-bit SSL</div>
+        <div class="badge">🏦 Central Bank Certified</div>
+        <div class="badge">⚡ Instant Transfers</div>
+      </div>
+    </div>
+
+    <div class="login-card">
+      <h2 class="card-title">Sign In</h2>
+      <p class="card-sub">Access your NileBank account</p>
+
+      <form class="login-form" onsubmit="handleLogin(event)">
+        <div class="field-group">
+          <label>Account Number or Email</label>
+          <!-- BUG #1 (HIDDEN): No rate limiting, no lockout after failed attempts.
+               Also: credentials compared client-side — easy to bypass via devtools. -->
+          <input type="text" id="login-user" class="inp" placeholder="e.g. NB-00123 or user@email.com" autocomplete="off"/>
+        </div>
+        <div class="field-group">
+          <label>Password</label>
+          <div class="pass-wrap">
+            <input type="password" id="login-pass" class="inp" placeholder="Enter your password"/>
+            <button type="button" class="toggle-pass" onclick="togglePass()">👁</button>
+          </div>
+        </div>
+        <div class="form-row">
+          <label class="checkbox-label">
+            <input type="checkbox" id="remember"/> Remember me
+          </label>
+          <a href="#" class="forgot">Forgot password?</a>
+        </div>
+        <button type="submit" class="btn-primary">Sign In →</button>
+      </form>
+
+      <div id="login-msg" class="login-msg"></div>
+
+      <div class="demo-hint">
+        <span>Demo credentials:</span>
+        <code>NB-00001</code> / <code>password123</code>
+        &nbsp;or&nbsp;
+        <code>admin</code> / <code>admin</code>
+      </div>
+    </div>
+  </main>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

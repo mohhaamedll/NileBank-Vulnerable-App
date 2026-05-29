@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>NileBank — Search Transactions</title>
+  <link rel="stylesheet" href="../css/main.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+</head>
+<body class="page-inner">
+
+  <nav class="topnav">
+    <div class="nav-inner">
+      <div class="brand"><a href="../index.html" style="text-decoration:none;color:inherit"><span class="brand-n">N</span>ILE<span class="brand-b">BANK</span></a></div>
+      <div class="nav-links">
+        <a href="transfer.html">Transfer</a>
+        <a href="search.html" class="active">Search</a>
+        <a href="upload.html">Documents</a>
+        <a href="profile.html">Profile</a>
+      </div>
+      <div class="nav-user">👤 Ahmed Mohamed &nbsp;|&nbsp; <a href="../index.html">Logout</a></div>
+    </div>
+  </nav>
+
+  <div class="inner-layout">
+    <aside class="sidebar">
+      <div class="account-card">
+        <div class="acc-label">Current Balance</div>
+        <div class="acc-balance">EGP 24,850.00</div>
+        <div class="acc-num">NB-00001</div>
+      </div>
+      <nav class="side-nav">
+        <a href="transfer.html" class="side-link">💸 Transfer</a>
+        <a href="search.html"   class="side-link active">🔍 Search Transactions</a>
+        <a href="upload.html"   class="side-link">📎 Upload Documents</a>
+        <a href="profile.html"  class="side-link">👤 Profile</a>
+      </nav>
+    </aside>
+
+    <main class="inner-main">
+      <div class="page-header">
+        <h1>Transaction Search</h1>
+        <p>Search your transaction history by keyword, amount, or date.</p>
+      </div>
+
+      <div class="form-card">
+        <div class="search-bar-wrap">
+          <!--
+            BUG #3 [XSS — HIDDEN]:
+            The search term is reflected back into the page via innerHTML:
+              resultsDiv.innerHTML = "Results for: " + searchInput
+            No sanitization. No escaping.
+            Payload: <img src=x onerror="alert(document.cookie)">
+          -->
+          <input type="text" id="search-input" class="inp search-inp"
+                 placeholder="Search transactions, recipients, notes…"
+                 onkeydown="if(event.key==='Enter') runSearch()"/>
+          <button class="btn-primary" onclick="runSearch()">Search</button>
+        </div>
+
+        <div class="filter-row">
+          <select class="inp inp-sm" id="filter-type">
+            <option value="">All Types</option>
+            <option value="credit">Credit</option>
+            <option value="debit">Debit</option>
+          </select>
+          <select class="inp inp-sm" id="filter-period">
+            <option value="30">Last 30 days</option>
+            <option value="90">Last 90 days</option>
+            <option value="365">Last year</option>
+          </select>
+          <input type="number" class="inp inp-sm" id="filter-min" placeholder="Min EGP"/>
+          <input type="number" class="inp inp-sm" id="filter-max" placeholder="Max EGP"/>
+        </div>
+      </div>
+
+      <!-- Search result header — XSS reflected here -->
+      <div id="search-result-header" class="search-result-header"></div>
+
+      <div class="form-card" id="results-box">
+        <table class="data-table" id="results-table">
+          <thead>
+            <tr><th>Date</th><th>Description</th><th>Type</th><th>Amount</th><th>Balance</th></tr>
+          </thead>
+          <tbody id="results-body">
+            <tr class="empty-row"><td colspan="5">Enter a search term above to filter transactions.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+
+  <script src="../js/main.js"></script>
+  <script src="../js/search.js"></script>
+</body>
+</html>
