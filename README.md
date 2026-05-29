@@ -41,5 +41,3 @@ nilebank/
     ├── upload.html
     └── profile.html
 ```
-
-## SRS Course — Team Max 6
